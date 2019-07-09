@@ -31,9 +31,9 @@ class Date
 public:
 	Date(){ cout << "Date()" << endl; }
 	~Date(){ cout << "~Date()" << endl; }
-	int _year;
-	int _month;
-	int _day;
+	int _year = 0;
+	int _month = 0;
+	int _day = 0;
 };
 
 // auto_ptr的实现原理是:管理权转移
@@ -136,7 +136,6 @@ public:
 			_ptr = sp._ptr;
 			_pRefCount = sp._pRefCount;
 			_pMutex = sp._pMutex;
-
 			AddRefCount();
 		}
 		return *this;
@@ -154,6 +153,7 @@ public:
 		++(*_pRefCount);
 		_pMutex->unlock();
 	}
+	int Get_Count(){ return *_pRefCount;}
 private:
 	void Release(){
 		bool deleteflag = false;
@@ -190,11 +190,88 @@ void test3(){
 	cout << sp2.UseCount() << endl;// 10 3
 	cout << sp3.UseCount() << endl;// 10 3
 }
+// shared_ptr管理的资源(对象)不是线程安全的,因此对管理的资源进行操作时也需要加锁.
+mutex mtx;// 定义一个全局锁
+void SharePtrFunc(SharedPtr<Date>& sp, size_t n){
+	cout << sp.Get() << endl;
+	for (size_t i = 0; i < n; ++i){
+		// 这里智能指针拷贝会++计数，智能指针析构会--计数，这里是线程安全的。
+		SharedPtr<Date> copy(sp);
+		// 这里智能指针访问管理的资源，不是线程安全的。所以我们看看这些值两个线程++了2n次，但是最终看到的结果，并一定是加了2n
+		mtx.lock();// 加锁保证管理对象的线程安全
+		copy->_year++;
+		copy->_month++;
+		copy->_day++;
+		mtx.unlock();
+	}
+}
+void test4(){
+	SharedPtr<Date> p(new Date);
+	cout << p.Get() << endl;
+	const size_t n = 100000;
+	thread t1(SharePtrFunc, p, n);
+	thread t2(SharePtrFunc, p, n);
+	t1.join();
+	t2.join();
+	cout << p.Get_Count() << endl;
+	cout << p->_year << endl;
+	cout << p->_month << endl;
+	cout << p->_day << endl;
+}
+// shared_ptr的循环引用问题
+struct ListNode
+{
+	int _data;
+	//shared_ptr<ListNode> _prev;
+	//shared_ptr<ListNode> _next;
+	// 可以使用弱指针来解决循环引用问题
+	weak_ptr<ListNode> _prev;
+	weak_ptr<ListNode> _next;
+	~ListNode(){ cout << "~ListNode()" << endl; }
+};
+void test5(){
+	shared_ptr<ListNode> node1(new ListNode);
+	shared_ptr<ListNode> node2(new ListNode);
+	cout << node1.use_count() << endl;
+	cout << node2.use_count() << endl;
+	// weak_ptr不增加引用计数
+	node1->_next = node2;
+	node2->_prev = node1;
+	cout << node1.use_count() << endl;
+	cout << node2.use_count() << endl;
+}
+// 如果不是new出来的对象如何通过智能指针管理呢？
+// 其实shared_ptr设计了一个删除器来解决这个问题
+// 仿函数的删除器
+template<class T>
+struct FreeFunc {
+	void operator()(T* ptr) {
+		cout << "free:" << ptr << endl;
+		free(ptr);
+	}
+};
+template<class T>
+struct DeleteArrayFunc {
+	void operator()(T* ptr)	{
+		cout << "delete[]" << ptr << endl;
+		delete[] ptr;
+	}
+};
+void test6()
+{
+	FreeFunc<int> freeFunc;
+	shared_ptr<int> sp1((int*)malloc(4), freeFunc);
+	DeleteArrayFunc<int> deleteArrayFunc;
+	shared_ptr<int> sp2((int*)malloc(4), deleteArrayFunc);
+}
 
 int main(){
 	//test1();
 	//test2();
 	//test3();
+	//test4();
+	//test5();
+	test6();
 	system("pause");
 	return 0;
 }
