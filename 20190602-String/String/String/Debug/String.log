@@ -1,0 +1,3 @@
+﻿  FindFile.cpp
+e:\cplusplus_up\20190606-string\string\string\findfile.cpp(11): error C2664: “HANDLE FindFirstFileA(LPCSTR,LPWIN32_FIND_DATAA)”: 无法将参数 1 从“const wchar_t *”转换为“LPCSTR”
+          与指向的类型无关；转换要求 reinterpret_cast、C 样式转换或函数样式转换
