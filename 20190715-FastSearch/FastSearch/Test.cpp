@@ -27,7 +27,25 @@ void TestSqlite(){
 	sq.ExecuteSql(insert_sql);
 
 	string query_sql = "select * from tb_doc where doc_path = 'E:\\Cplusplus_up\\20190715-FastSearch\\FastSearch\\test'";
-	sq.ExecuteSql(query_sql);
+	int row, col;
+	char** ppRet;
+	/*
+	sq.GetTable(query_sql, row, col, ppRet);
+	for (int i = 1; i < row; ++i){
+		for (int j = 0; j < col; ++j){
+			cout << ppRet[i * col + j] << " ";
+		}
+		cout << endl;
+	}
+	sqlite3_free_table(ppRet);
+	*/
+	AutoGetTable agt(sq, query_sql, row, col, ppRet);
+	for (int i = 1; i <= row; ++i){
+		for (int j = 0; j < col; ++j){
+			cout << ppRet[i * col + j] << " ";
+		}
+		cout << endl;
+	}
 }
 
 int main(){
