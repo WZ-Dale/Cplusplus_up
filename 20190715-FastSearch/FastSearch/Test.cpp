@@ -1,6 +1,6 @@
 #include "Common.h"
-#include "ScanManager.h"
 #include "DataManager.h"
+#include "ScanManager.h"
 
 void TestDirectoryList(){
 	vector<string>	dirs, files;
@@ -47,10 +47,39 @@ void TestSqlite(){
 		cout << endl;
 	}
 }
+void TestScanManager(){
+	ScanManager scanmgr;
+	scanmgr.Scan("E:\\Cplusplus_up\\20190715-FastSearch1\\FastSearch");
+}
+void TestSearch(){
+	DataManager datamgr;
+	datamgr.Init();	//记得初始化
+	vector<std::pair<string, string>> docinfos;
+	string key;
+	cout << "====================================================" << endl;
+	while (cin >> key){
+		datamgr.Search(key, docinfos);
+		for (const auto& e : docinfos){
+			cout << e.first << "   " << e.second << endl;
+		}
+		cout << "====================================================" << endl;
+	}
+}
+void TestPinyin(){
+	string allspell = ChineseConvertPinYinAllSpell("新建  王泽   wangze  zegg来一打");
+	string initials = ChineseConvertPinYinInitials("新建  哥哥   gegege  zegg来一打");
+	cout << allspell << endl;
+	cout << initials << endl;
+}
 
 int main(){
 	//TestDirectoryList();
-	TestSqlite();
+	//TestSqlite();
+	TestScanManager();
+	//TestSearch();
+	//ColourPrintf("阿斯蒂芬嘎哈官方撒地方感受");
+	//TestPinyin();
 	system("pause");
 	return 0;
 }
+

@@ -46,9 +46,10 @@ class DataManager
 {
 public:
 	void Init();	//建表,打开数据库
-	void GetDocs(const string& path);	//查找path下的所有子文档
-	void InsertDoc(const string path, string name);	//插入
-	void DeleteDoc(const string path, string name);	//删除
+	void GetDocs(const string& path, std::set<string>& dbset);	//查找path下的所有子文档
+	void InsertDoc(const string& path, const string& name);	//插入
+	void DeleteDoc(const string& path, const string& name);	//删除
+	void Search(const string& key, vector<std::pair<string, string>>& docinfos);	//搜索
 private:
 	SqliteManager _dbmgr;
 };
