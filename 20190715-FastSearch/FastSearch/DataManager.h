@@ -2,6 +2,7 @@
 
 #include "Common.h"
 
+//对sqlite操作的封装
 class SqliteManager
 {
 public:
@@ -50,6 +51,8 @@ public:
 	void InsertDoc(const string& path, const string& name);	//插入
 	void DeleteDoc(const string& path, const string& name);	//删除
 	void Search(const string& key, vector<std::pair<string, string>>& docinfos);	//搜索
+	void SplitHighlight(const string& name, const string& key, string& prefix, string& highlight, string& suffix);	//分割高亮部分
 private:
 	SqliteManager _dbmgr;
 };
+

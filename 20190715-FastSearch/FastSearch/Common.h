@@ -9,6 +9,7 @@
 #include <set>
 #include <assert.h>
 #include <windows.h>
+#include <thread>
 
 using std::cin;
 using std::cout;
@@ -19,7 +20,7 @@ using std::vector;
 #include "./sqlite-amalgamation-3280000/sqlite3.h"
 
 #define __DEBUG__
-#define __TRACE__
+//#define __TRACE__
 
 static void DirectoryList(const string& path, vector<string>& dirs, vector<string>& files){	//遍历目录下的所有文件
 	_finddata_t file;
@@ -103,7 +104,7 @@ static void ColourPrintf(const char* str)
 	colorOld = csbi.wAttributes;
 	SetConsoleTextAttribute(handle, color);
 	printf("%s", str);
-	SetConsoleTextAttribute(handle, colorOld);
+	SetConsoleTextAttribute(handle, colorOld);	//输出完之后再把颜色恢复回去
 }
 
 // 汉字转拼音全拼
@@ -344,3 +345,4 @@ static std::string ChineseConvertPinYinInitials(const std::string& name)
 	}
 	return result;
 }
+
