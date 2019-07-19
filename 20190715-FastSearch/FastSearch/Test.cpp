@@ -56,8 +56,8 @@ void TestSearch(){
 	//scanmgr.Scan("E:\\Cplusplus_up\\20190715-FastSearch1\\FastSearch");
 	ScanManager::CreateInstance();
 
-	DataManager datamgr;
-	datamgr.Init();	//记得初始化
+	//DataManager datamgr;
+	//datamgr.Init();	//记得初始化
 	vector<std::pair<string, string>> docinfos;
 	string key;
 	cout << "==============================================================================" << endl;
@@ -66,7 +66,7 @@ void TestSearch(){
 	cout << "请输入要搜索的关键字: ";
 	while (cin >> key){
 		docinfos.clear();
-		datamgr.Search(key, docinfos);
+		DataManager::GetInstance()->Search(key, docinfos);
 		if (docinfos.empty()){
 			cout << "\n=============================>> 未找到相关文件 <<=============================" << endl;
 		}
@@ -77,7 +77,7 @@ void TestSearch(){
 				const string& name = e.first;
 				const string& path = e.second;
 				string prefix, highlight, suffix;
-				datamgr.SplitHighlight(name, key, prefix, highlight, suffix);
+				DataManager::GetInstance()->SplitHighlight(name, key, prefix, highlight, suffix);
 				cout << prefix;
 				ColourPrintf(highlight.c_str());
 				cout << suffix;

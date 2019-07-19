@@ -10,6 +10,7 @@
 #include <assert.h>
 #include <windows.h>
 #include <thread>
+#include <mutex>
 
 using std::cin;
 using std::cout;

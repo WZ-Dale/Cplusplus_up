@@ -43,6 +43,7 @@ void SqliteManager::GetTable(const string& sql, int& row, int& col, char**& ppRe
 }
 
 void DataManager::Init(){
+	std::unique_lock<std::mutex> lock(_mtx);
 	_dbmgr.Open(DB_NAME);
 	char sql[256];
 	sprintf(sql, "create table if not exists %s(id integer primary key, path text, name text, name_pinyin text, name_initials text)", TB_NAME);
@@ -54,7 +55,9 @@ void DataManager::GetDocs(const string& path, std::set<string>& dbset){
 	sprintf(sql, "select name from %s where path = '%s'", TB_NAME, path.c_str());
 	int row, col;
 	char** ppRet;
+	std::unique_lock<std::mutex> lock(_mtx);
 	AutoGetTable agt(_dbmgr, sql, row, col, ppRet);
+	lock.unlock();
 	for (int i = 1; i <= row; ++i){
 		for (int j = 0; j < col; ++j){
 			dbset.insert(ppRet[i * col + j]);
@@ -67,6 +70,7 @@ void DataManager::InsertDoc(const string& path, const string& name){
 	string initials = ChineseConvertPinYinInitials(name);
 	sprintf(sql, "insert into %s(path, name, name_pinyin, name_initials) values('%s', '%s', '%s', '%s')", TB_NAME, path.c_str(), name.c_str(), allspell.c_str(), initials.c_str());
 	//sprintf(sql, "insert into %s(path, name, allspell, initials) values('%s', '%s', '%s', '%s')", TB_NAME, path.c_str(), name.c_str(), allspell.c_str(), initials.c_str());
+	std::unique_lock<std::mutex> lock(_mtx);
 	_dbmgr.ExecuteSql(sql);
 }
 void DataManager::DeleteDoc(const string& path, const string& name){
@@ -77,6 +81,7 @@ void DataManager::DeleteDoc(const string& path, const string& name){
 	// 还要删该文件目录下的子文件
 	string path_ = path + '\\' + name;
 	sprintf(sql, "delete from %s where path like '%s%%'", TB_NAME, path_.c_str());
+	std::unique_lock<std::mutex> lock(_mtx);
 	_dbmgr.ExecuteSql(sql);
 }
 void DataManager::Search(const string& key, vector<std::pair<string, string>>& docinfos){
@@ -95,7 +100,9 @@ void DataManager::Search(const string& key, vector<std::pair<string, string>>& d
 		sprintf(sql, "select name, path from %s where name_pinyin like '%%%s%%' or name_initials like '%%%s%%'", TB_NAME, pinyin.c_str(), initials.c_str());
 		int row, col;
 		char** ppRet;
+		std::unique_lock<std::mutex> lock(_mtx);
 		AutoGetTable agt(_dbmgr, sql, row, col, ppRet);
+		lock.unlock();
 		for (int i = 1; i <= row; ++i){
 			docinfos.push_back(std::make_pair(ppRet[i * col + 0], ppRet[i * col + 1]));
 		}

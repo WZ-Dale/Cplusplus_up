@@ -3,7 +3,7 @@
 #include "Common.h"
 #include "DataManager.h"
 
-//整个程序只有一个扫描模块,设计成单例
+//整个程序只需要一个扫描模块,因此将ScanManager设计成单例
 class ScanManager	//扫描出信息,放到数据库中
 {
 public:
@@ -22,9 +22,9 @@ public:
 	}
 private:
 	ScanManager(){
-		_datamgr.Init();
+		//_datamgr.Init();
 	}
 	ScanManager(const ScanManager&);
-	DataManager _datamgr;
+	//DataManager _datamgr;
 };
 
