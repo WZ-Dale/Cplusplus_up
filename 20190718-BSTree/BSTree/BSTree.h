@@ -27,143 +27,110 @@ public:
 		:_root(nullptr)
 	{}
 
-	bool Insert(const pair<K, V>& kv)
-	{
-		if (_root == nullptr)
-		{
+	bool Insert(const pair<K, V>& kv){
+		if (_root == nullptr){
 			_root = new Node(kv);
 			return true;
 		}
 
 		Node* parent = nullptr;
 		Node* cur = _root;
-		while (cur)
-		{
-			if (cur->_kv.first > kv.first)
-			{
+		while (cur){
+			if (cur->_kv.first > kv.first){
 				parent = cur;
 				cur = cur->_left;
 			}
-			else if (cur->_kv.first < kv.first)
-			{
+			else if (cur->_kv.first < kv.first){
 				parent = cur;
 				cur = cur->_right;
 			}
-			else
-			{
+			else{
 				return false;
 			}
 		}
 
 		cur = new Node(kv);
-		if (parent->_kv.first < kv.first)
-		{
+		if (parent->_kv.first < kv.first){
 			parent->_right = cur;
 		}
-		else
-		{
+		else{
 			parent->_left = cur;
 		}
 		return true;
 	}
 
-	Node* Find(const K& key)
-	{
+	Node* Find(const K& key){
 		Node* cur = _root;
-		while (cur)
-		{
-			if (cur->_kv.first < kv.first)
-			{
+		while (cur){
+			if (cur->_kv.first < kv.first){
 				cur = cur->_right;
 			}
-			else if (cur->_kv.first > kv.first)
-			{
+			else if (cur->_kv.first > kv.first){
 				cur = cur->_left;
 			}
-			else
-			{
+			else{
 				return cur;
 			}
 		}
-
 		return nullptr;
 	}
 
-	bool Remove(const K& key)
-	{
+	bool Remove(const K& key){
 		Node* parent = nullptr;
 		Node* cur = _root;
-		while (cur)
-		{
-			if (cur->_kv.first < key)
-			{
+		while (cur){
+			if (cur->_kv.first < key){
 				parent = cur;
 				cur = cur->_right;
 			}
-			else if (cur->_kv.first > key)
-			{
+			else if (cur->_kv.first > key){
 				parent = cur;
 				cur = cur->_left;
 			}
-			else
-			{
+			else{
 				// 1.只有0-1个孩纸
 				// 2.有两个孩纸
 				Node* del = cur;
-				if (cur->_left == nullptr)
-				{
-					if (parent == nullptr)
-					{
+				if (cur->_left == nullptr){
+					if (parent == nullptr){
 						_root = cur->_right;
 					}
-					else
-					{
-						if (cur == parent->_left)
-						{
+					else{
+						if (cur == parent->_left){
 							parent->_left = cur->_right;
 						}
-						else
-						{
+						else{
 							parent->_right = cur->_right;
 						}
 					}
 				}
-				else if (cur->_right == nullptr)
-				{
-					if (parent == nullptr)
-					{
+				else if (cur->_right == nullptr){
+					if (parent == nullptr){
 						_root = cur->_left;
 					}
-					else
-					{
-						if (cur == parent->_left)
-						{
+					else{
+						if (cur == parent->_left){
 							parent->_left = cur->_left;
 						}
-						else
-						{
+						else{
 							parent->_right = cur->_left;
 						}
 					}
 				}
-				else
-				{
+				else{
 					Node* rpParent = cur;
 					Node* replace = cur->_right;
-					while (replace->_left)
-					{
+					while (replace->_left){
 						rpParent = replace;
 						replace = replace->_left;
 					}
 
 					cur->_kv = replace->_kv;
 					del = replace;
-					if (rpParent->_left == replace)
-					{
+					if (rpParent->_left == replace){
 						rpParent->_left = replace->_right;
 					}
-					else
-					{
+					else{
 						rpParent->_right = replace->_right;
 					}
 				}
@@ -177,16 +144,15 @@ public:
 		return false;
 	}
 
-	void InOrder()
-	{
+	void InOrder(){
 		_InOrder(_root);
 		cout << endl;
 	}
 
-	void _InOrder(Node* root)
-	{
-		if (root == nullptr)
+	void _InOrder(Node* root){
+		if (root == nullptr){
 			return;
+		}
 
 		_InOrder(root->_left);
 		cout << root->_kv.first << " ";
@@ -197,8 +163,7 @@ private:
 	Node* _root;
 };
 
-void TestBSTree1()
-{
+void TestBSTree1(){
 	BSTree<int, int> tree;
 	tree.Insert(make_pair(1, 1));
 	tree.Insert(make_pair(3, 1));
