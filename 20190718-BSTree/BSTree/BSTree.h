@@ -62,10 +62,10 @@ public:
 	Node* Find(const K& key){
 		Node* cur = _root;
 		while (cur){
-			if (cur->_kv.first < kv.first){
+			if (cur->_kv.first < key){
 				cur = cur->_right;
 			}
-			else if (cur->_kv.first > kv.first){
+			else if (cur->_kv.first > key){
 				cur = cur->_left;
 			}
 			else{
@@ -163,7 +163,7 @@ private:
 	Node* _root;
 };
 
-void TestBSTree1(){
+void TestBSTree(){
 	BSTree<int, int> tree;
 	tree.Insert(make_pair(1, 1));
 	tree.Insert(make_pair(3, 1));
@@ -172,6 +172,7 @@ void TestBSTree1(){
 	tree.Insert(make_pair(1, 1));
 	tree.Insert(make_pair(2, 1));
 	tree.InOrder();
+	cout << tree.Find(5)->_kv.first << " ";
 
 	tree.Remove(1);
 	tree.Remove(3);

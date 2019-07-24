@@ -2,7 +2,7 @@
 #include "BSTree.h"
 
 int main(){
-	TestBSTree1();
+	TestBSTree();
 	system("pause");
 	return 0;
 }
