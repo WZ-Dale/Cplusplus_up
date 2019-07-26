@@ -35,7 +35,7 @@ public:
 
 		Node* parent = nullptr;
 		Node* cur = _root;
-		while (cur){
+		while (cur){	// 找合适的插入位置
 			if (cur->_kv.first > kv.first){
 				parent = cur;
 				cur = cur->_left;
@@ -49,7 +49,7 @@ public:
 			}
 		}
 
-		cur = new Node(kv);
+		cur = new Node(kv);	// 找的合适的插入位置后进行插入
 		if (parent->_kv.first < kv.first){
 			parent->_right = cur;
 		}
@@ -79,7 +79,7 @@ public:
 		Node* parent = nullptr;
 		Node* cur = _root;
 		while (cur){
-			if (cur->_kv.first < key){
+			if (cur->_kv.first < key){	// 找到要删除的节点
 				parent = cur;
 				cur = cur->_right;
 			}
@@ -90,12 +90,12 @@ public:
 			else{
 				// 1.只有0-1个孩纸
 				// 2.有两个孩纸
-				Node* del = cur;
-				if (cur->_left == nullptr){
-					if (parent == nullptr){
+				Node* del = cur;	// 标记删除位置
+				if (cur->_left == nullptr){	// 1.左孩子为空,要删除的结点只有右孩子结点
+					if (parent == nullptr){	// 若要删根节点,则让其右孩子为根
 						_root = cur->_right;
 					}
-					else{
+					else{	// 如果不是删除根节点,使被删除节点的父结点指向被删除节点的右孩子结点
 						if (cur == parent->_left){
 							parent->_left = cur->_right;
 						}
@@ -104,11 +104,11 @@ public:
 						}
 					}
 				}
-				else if (cur->_right == nullptr){
-					if (parent == nullptr){
+				else if (cur->_right == nullptr){	// 1.右孩子为空,要删除的结点只有左孩子结点
+					if (parent == nullptr){	// 若要删根节点,则让其左孩子为根
 						_root = cur->_left;
 					}
-					else{
+					else{	// 如果不是删除根节点,使被删除节点的父结点指向被删除节点的左孩子结点
 						if (cur == parent->_left){
 							parent->_left = cur->_left;
 						}
@@ -117,25 +117,25 @@ public:
 						}
 					}
 				}
-				else{
+				else{	// 2.要删除的结点有左、右孩子结点
 					Node* rpParent = cur;
 					Node* replace = cur->_right;
-					while (replace->_left){
+					while (replace->_left){	// 在它的右子树中寻找中序下的第一个结点(关键码最小)，用它的值填补到被删除节点中，再来处理该结点的删除问题
 						rpParent = replace;
 						replace = replace->_left;
 					}
 
-					cur->_kv = replace->_kv;
+					cur->_kv = replace->_kv;	// 取代要删的结点
 					del = replace;
-					if (rpParent->_left == replace){
-						rpParent->_left = replace->_right;
+					if (rpParent->_left == replace){	// 如果rp有左子树
+						rpParent->_left = replace->_right;	// 把re的右子树往上提
 					}
-					else{
+					else{	// 如果rp没有左子树
 						rpParent->_right = replace->_right;
 					}
 				}
 
-				delete del;
+				delete del;	// 释放要删除的结点空间
 
 				return true;
 			}
@@ -154,7 +154,7 @@ public:
 			return;
 		}
 
-		_InOrder(root->_left);
+		_InOrder(root->_left);	// 中序遍历
 		cout << root->_kv.first << " ";
 		_InOrder(root->_right);
 	}
@@ -165,14 +165,14 @@ private:
 
 void TestBSTree(){
 	BSTree<int, int> tree;
-	tree.Insert(make_pair(1, 1));
 	tree.Insert(make_pair(3, 1));
+	tree.Insert(make_pair(1, 1));
 	tree.Insert(make_pair(4, 1));
 	tree.Insert(make_pair(6, 1));
-	tree.Insert(make_pair(1, 1));
+	tree.Insert(make_pair(5, 1));
 	tree.Insert(make_pair(2, 1));
 	tree.InOrder();
-	cout << tree.Find(5)->_kv.first << " ";
+	//cout << tree.Find(5)->_kv.first << " ";
 
 	tree.Remove(1);
 	tree.Remove(3);
