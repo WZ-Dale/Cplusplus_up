@@ -1,0 +1,27 @@
+﻿  main.cpp
+e:\cplusplus_up\20190719-avltree\avltree\avltree.h(54): error C2819: “std::pair<K,V>”类型没有重载成员“operator ->”
+          with
+          [
+              K=int
+  ,            V=int
+          ]
+          是否改用“.”?
+          e:\cplusplus_up\20190719-avltree\avltree\avltree.h(31): 编译类 模板 成员函数“bool AVLTree<int,int>::Insert(const std::pair<K,V> &)”时
+          with
+          [
+              K=int
+  ,            V=int
+          ]
+          e:\cplusplus_up\20190719-avltree\avltree\avltree.h(247): 参见对正在编译的函数 模板 实例化“bool AVLTree<int,int>::Insert(const std::pair<K,V> &)”的引用
+          with
+          [
+              K=int
+  ,            V=int
+          ]
+          e:\cplusplus_up\20190719-avltree\avltree\avltree.h(243): 参见对正在编译的类 模板 实例化“AVLTree<int,int>”的引用
+e:\cplusplus_up\20190719-avltree\avltree\avltree.h(54): error C2232: “->std::pair<K,V>::first”: 左操作数有“struct”类型，使用“.”
+          with
+          [
+              K=int
+  ,            V=int
+          ]
