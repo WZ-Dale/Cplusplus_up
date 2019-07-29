@@ -63,41 +63,40 @@ public:
 
 
 		// 插入之后，需要将树调平衡
-		// 1.更新平衡因子
 		while (parent){
-			if (cur == parent->_right){
+			// 1.更新平衡因子
+			if (cur == parent->_right){	// 如果插入在右，父节点平衡因子++
 				parent->_bf++;
 			}
-			else{
+			else{	// 如果插入在左，父节点平衡因子--
 				parent->_bf--;
 			}
-
-			if (parent->_bf == 0){	// 高度不变，更新完成
+			// 2.根据平衡因子，做出判断，看是否需要调平衡
+			if (parent->_bf == 0){	// 更新后平衡因子绝对值为0，说明高度不变，更新完成
 				break;
 			}
-			else if (abs(parent->_bf) == 1){	// 高度变了，继续完成
+			else if (abs(parent->_bf) == 1){	// 高度变了，需继续向上更新
 				cur = parent;
-				parent = parent->_parent;
-			}
-			else if (abs(parent->_bf) == 2){	// 不平衡，旋转
+				parent = parent->_parent;	// 将cur和parent的指向向上挪动
+			}// 若挪到最后parent指向空(说明cur指向了根节点)则会退出循环，若挪动指向的过程中平衡因子更新到2则会执行下面的旋转
+			else if (abs(parent->_bf) == 2){	// 更新后平衡因子绝对值为2，说明不平衡了，立即旋转
 				if (parent->_bf == 2){
-					if (cur->_bf == 1){
+					if (cur->_bf == 1){		// 父为2，右子为1，需左旋
 						RotateL(parent);
 					}
-					else if (cur->_bf == -1){
+					else if (cur->_bf == -1){		// 右子为-1，需右左旋
 						RotateRL(parent);
 					}
 				}
 				else if (parent->_bf == -2){
-					if (cur->_bf == -1){
+					if (cur->_bf == -1){	// 父为-2，左子为-1，需右旋
 						RotateR(parent);
 					}
-					else if (cur->_bf == 1){
+					else if (cur->_bf == 1){		// 右子为-1，需左右旋
 						RotateLR(parent);
 					}
 				}
-
-				break;
+				break;	// 旋完则会达到平衡
 			}
 			else{
 				assert(false);
@@ -111,18 +110,18 @@ public:
 		Node* subRL = subR->_left;
 
 		parent->_right = subRL;
-		if (subRL)
+		if (subRL){
 			subRL->_parent = parent;
-
+		}
 		subR->_left = parent;
 		Node* ppNode = parent->_parent;
 		parent->_parent = subR;
 
-		if (parent == _root){
+		if (parent == _root){	// 如果父节点是根节点
 			_root = subR;
 			_root->_parent = nullptr;
 		}
-		else{
+		else{	// 如果不是，则更改祖父的指向
 			if (ppNode->_left == parent){
 				ppNode->_left = subR;
 			}
@@ -200,8 +199,8 @@ public:
 		if (root == nullptr){
 			return;
 		}
-		_InOrder(root->_left);
-		cout << root->_kv.first << " ";
+		_InOrder(root->_left);	// 中序
+		cout << root->_kv.first << "[" << root->_kv.second << "]" << " ";
 		_InOrder(root->_right);
 	}
 
