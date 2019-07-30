@@ -204,6 +204,7 @@ public:
 		_InOrder(root->_right);
 	}
 
+	// 验证是否平衡
 	int _Height(Node* root){
 		if (root == nullptr){
 			return 0;
