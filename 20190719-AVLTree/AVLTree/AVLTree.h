@@ -28,7 +28,8 @@ class AVLTree
 {
 	typedef AVLTreeNode<K, V> Node;	// 节点类重命名为Node
 public:
-	bool Insert(const pair<K, V>& kv){	// 插入节点
+	bool Insert(const pair<K, V>& kv)
+	{	// 插入节点
 		if (_root == nullptr){	// 如果根节点为空，则直接插入到根节点
 			_root = new Node(kv);
 			_root->_bf = 0;	// 根节点的平衡因子设为0
@@ -105,7 +106,8 @@ public:
 		return true;
 	}
 
-	void RotateL(Node* parent){
+	void RotateL(Node* parent)
+	{
 		Node* subR = parent->_right;
 		Node* subRL = subR->_left;
 
@@ -133,7 +135,8 @@ public:
 		parent->_bf = subR->_bf = 0;
 	}
 
-	void RotateR(Node* parent){
+	void RotateR(Node* parent)
+	{
 		Node* subL = parent->_left;
 		Node* subLR = subL->_right;
 
@@ -162,12 +165,14 @@ public:
 		parent->_bf = subL->_bf = 0;
 	}
 
-	void RotateLR(Node* parent){
+	void RotateLR(Node* parent)
+	{
 		RotateL(parent->_left);
 		RotateR(parent);
 	}
 
-	void RotateRL(Node* parent){
+	void RotateRL(Node* parent)
+	{
 		Node* subR = parent->_right;
 		Node* subRL = subR->_left;
 		int bf = subRL->_bf;
@@ -190,12 +195,14 @@ public:
 		}
 	}
 
-	void InOrder(){
+	void InOrder()
+	{
 		_InOrder(_root);
 		cout << endl;
 	}
 
-	void _InOrder(Node* root){
+	void _InOrder(Node* root)
+	{
 		if (root == nullptr){
 			return;
 		}
@@ -205,7 +212,8 @@ public:
 	}
 
 	// 验证是否平衡
-	int _Height(Node* root){
+	int _Height(Node* root)
+	{
 		if (root == nullptr){
 			return 0;
 		}
@@ -216,11 +224,13 @@ public:
 		return leftheight > rightheight ? leftheight + 1 : rightheight + 1;
 	}
 
-	bool IsBalance(){
+	bool IsBalance()
+	{
 		return _IsBalance(_root);
 	}
 
-	bool _IsBalance(Node* root){
+	bool _IsBalance(Node* root)
+	{
 		if (root == nullptr){
 			return true;
 		}
@@ -237,7 +247,8 @@ private:
 	Node* _root = nullptr;
 };
 
-void TestAVLTree(){
+void TestAVLTree()
+{
 	AVLTree<int, int> t;
 	//int a[] = { 16, 3, 7, 11, 9, 26, 18, 14, 15 };
 	int a[] = { 4, 2, 6, 1, 3, 5, 15, 7, 16, 14, };
