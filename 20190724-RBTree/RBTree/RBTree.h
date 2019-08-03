@@ -70,11 +70,11 @@ public:
 			cur->_parent = parent;
 		}
 		// 插入之后，红黑树的性质是否造到破坏，若被破坏则需要将树调平衡（接近平衡）
-		while (parent && parent->_col == RED){
+		while (parent && parent->_col == RED){	// 若父节点颜色为黑，就没必要向上更新了
 			Node* grandfather = parent->_parent;
 			if (parent == grandfather->_left){
 				Node* uncle = grandfather->_right;
-				if (uncle && uncle->_col == RED){	// 1.插入红，父为红，（祖父必然是黑），叔叔存在且为红		（红红黑红）
+				if (uncle && uncle->_col == RED){	// 1.当前为红，父为红，（祖父必然是黑），叔叔存在且为红		（红红黑红）
 					parent->_col = BLACK;
 					uncle->_col = BLACK;
 					grandfather->_col = RED;
@@ -82,12 +82,12 @@ public:
 					cur = grandfather;	//	继续向上判断
 					parent = cur->_parent;
 				}
-				else{	// 2.叔叔若不存在或为黑		（红红黑黑）
-					if (cur == parent->_right){
+				else{	// 2.当前结点的叔叔若不存在或为黑		（红红黑黑）
+					if (cur == parent->_right){	// 情况3，折线需要先旋转为情况2，然后与情况2统一处理
 						RotateL(parent);
-						swap(parent, cur);
+						swap(parent, cur);	// 旋转后需要改变cur和parent的指向，才和情况2适用
 					}
-
+					// 情况2
 					RotateR(grandfather);
 					parent->_col = BLACK;
 					grandfather->_col = RED;
@@ -95,8 +95,30 @@ public:
 					break;
 				}
 			}
-			else{
+			else{	// 对称的另一边
+				Node* uncle = grandfather->_left;
+				if (uncle && uncle->_col == RED)
+				{
+					parent->_col = BLACK;
+					uncle->_col = BLACK;
+					grandfather->_col = RED;
 
+					cur = grandfather;
+					parent = cur->_parent;
+				}
+				else
+				{
+					if (cur == parent->_left)
+					{
+						RotateR(parent);
+						swap(parent, cur);
+					}
+
+					RotateL(grandfather);
+					parent->_col = BLACK;
+					grandfather->_col = RED;
+					break;
+				}
 			}
 		}
 
