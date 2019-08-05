@@ -184,6 +184,84 @@ public:
 		}
 	}
 
+	bool IsValidRBTree()
+	{
+		Node* pRoot = _root;
+		// 空树也是红黑树
+		if (nullptr == pRoot){
+			return true;
+		}
+		// 检测根节点是否满足情况
+		if (pRoot->_col != BLACK){
+			cout << "违反红黑树性质二：根节点必须为黑色" << endl;
+			return false;
+		}
+		// 获取任意一条路径中黑色节点的个数
+		size_t blackCount = 0;
+		Node* pCur = pRoot;
+		while (pCur){
+			if (pCur->_col == BLACK){
+				blackCount++;
+			}
+			pCur = pCur->_left;
+		}
+		// 检测是否满足红黑树的性质，k用来记录路径中黑色节点的个数
+		size_t k = 0;
+		return _IsValidRBTree(pRoot, k, blackCount);
+	}
+
+	bool _IsValidRBTree(Node* pRoot, size_t k, const size_t blackCount)
+	{
+		//走到null之后，判断k和black是否相等
+		if (nullptr == pRoot){
+			if (k != blackCount){
+				cout << "违反性质四：每条路径中黑色节点的个数必须相同" << endl;
+				return false;
+			}
+			return true;
+		}
+		// 统计黑色节点的个数
+		if (pRoot->_col == BLACK){
+			k++;
+		}
+		// 检测当前节点与其双亲是否都为红色
+		Node* pParent = pRoot->_parent;
+		if (pParent && pParent->_col == RED && pRoot->_col == RED){
+			cout << "违反性质三：没有连在一起的红色节点" << endl;
+			return false;
+		}
+		return _IsValidRBTree(pRoot->_left, k, blackCount) && _IsValidRBTree(pRoot->_right, k, blackCount);
+	}
+
+	void InOrder()
+	{
+		_InOrder(_root);
+		cout << endl;
+	}
+
+	void _InOrder(Node* root)
+	{
+		if (root == nullptr){
+			return;
+		}
+		_InOrder(root->_left);
+		cout << root->_kv.first << " ";
+		_InOrder(root->_right);
+	}
 private:
 	Node* _root = nullptr;
 };
+
+void TestRBtree()
+{
+	RBTree<int, int> t;
+	int a[] = { 4, 2, 6, 1, 3, 5, 9, 7, 8, 0, 0, 3 };
+	//int a[] = { 16, 3, 7, 11, 9, 26, 18, 14, 15 };
+	//int a[] = { 4, 2, 6, 1, 3, 5, 15, 7, 16, 14 };
+	for (auto e : a){
+		t.Insert(make_pair(e, e));
+	}
+
+	t.InOrder();
+	cout << t.IsValidRBTree() << endl;
+}
