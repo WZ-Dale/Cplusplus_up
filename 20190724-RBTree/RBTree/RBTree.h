@@ -7,7 +7,7 @@ using namespace std;
 enum Colour
 {
 	RED,
-	BLACK,
+	BLACK
 };
 
 template<class K, class V>
@@ -97,8 +97,7 @@ public:
 			}
 			else{	// ¶Ô³ÆµÄÁíÒ»±ß
 				Node* uncle = grandfather->_left;
-				if (uncle && uncle->_col == RED)
-				{
+				if (uncle && uncle->_col == RED){
 					parent->_col = BLACK;
 					uncle->_col = BLACK;
 					grandfather->_col = RED;
@@ -106,10 +105,8 @@ public:
 					cur = grandfather;
 					parent = cur->_parent;
 				}
-				else
-				{
-					if (cur == parent->_left)
-					{
+				else{
+					if (cur == parent->_left){
 						RotateR(parent);
 						swap(parent, cur);
 					}
