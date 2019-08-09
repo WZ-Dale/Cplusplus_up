@@ -1,0 +1,13 @@
+﻿  DataManager.cpp
+e:\cplusplus_up\20190715-fastsearch\fastsearch\Common.h(318): warning C4018: “<”: 有符号/无符号不匹配
+  ScanManager.cpp
+e:\cplusplus_up\20190715-fastsearch\fastsearch\Common.h(318): warning C4018: “<”: 有符号/无符号不匹配
+  Test.cpp
+e:\cplusplus_up\20190715-fastsearch\fastsearch\Common.h(318): warning C4018: “<”: 有符号/无符号不匹配
+DataManager.obj : error LNK2001: 无法解析的外部符号 _sqlite3_free
+DataManager.obj : error LNK2001: 无法解析的外部符号 _sqlite3_close
+DataManager.obj : error LNK2001: 无法解析的外部符号 _sqlite3_exec
+DataManager.obj : error LNK2001: 无法解析的外部符号 _sqlite3_open
+DataManager.obj : error LNK2001: 无法解析的外部符号 _sqlite3_free_table
+DataManager.obj : error LNK2001: 无法解析的外部符号 _sqlite3_get_table
+E:\Cplusplus_up\20190715-FastSearch\Release\FastSearch.exe : fatal error LNK1120: 6 个无法解析的外部命令
