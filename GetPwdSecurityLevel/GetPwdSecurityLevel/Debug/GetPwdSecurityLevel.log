@@ -1,3 +1,3 @@
 ﻿  main.cpp
-c:\users\administrator\documents\visual studio 2013\projects\getpwdsecuritylevel\getpwdsecuritylevel\main.cpp(34): warning C4715: “GetPwdSecurityLevel::GetLevel”: 不是所有的控件路径都返回值
-  GetPwdSecurityLevel.vcxproj -> C:\Users\Administrator\Documents\Visual Studio 2013\Projects\GetPwdSecurityLevel\Debug\GetPwdSecurityLevel.exe
+e:\cplusplus_up\getpwdsecuritylevel\getpwdsecuritylevel\main.cpp(95): warning C4715: “GetPwdSecurityLevel::GetLevel”: 不是所有的控件路径都返回值
+  GetPwdSecurityLevel.vcxproj -> E:\Cplusplus_up\GetPwdSecurityLevel\Debug\GetPwdSecurityLevel.exe
